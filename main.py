@@ -1,4 +1,5 @@
 import pygame
+from collections import deque
 import numpy as np
 import random
 
@@ -48,13 +49,41 @@ def main():
 
         for row in bombGrid:
             print(row)
-        
-        pass
+
 
 
     def selectTile(col, row):
-        displayGrid[row][col] = hiddenGrid[row][col]
-        pass
+        nonlocal running
+        if bombGrid[row][col]:
+            running = False
+
+
+        if displayGrid[row][col] is None:
+            displayGrid[row][col] = hiddenGrid[row][col]
+            if displayGrid[row][col] == 0:
+                print('BFS')
+                #bfs
+                seen = set()
+                q = deque()
+                q.append((col, row))
+                while q:
+                    tempCol, tempRow = q.popleft()
+                    if (tempCol, tempRow) not in seen:
+                        seen.add((tempCol, tempRow))
+
+                    else: 
+                        continue
+                    
+                    displayGrid[tempRow][tempCol] = hiddenGrid[tempRow][tempCol]
+                    if displayGrid[tempRow][tempCol] != 0:
+                        continue
+
+                    for dx, dy in ((0, -1), (-1, 0), (0, 1), (1, 0), (1, 1), (-1, -1), (1, -1), (-1, 1)):
+                        newCol = tempCol + dx
+                        newRow = tempRow + dy
+                        if 0 <= newCol < cols and 0 <= newRow < rows:
+                            q.append((newCol, newRow))
+
 
     def flagTile(col, row):
         if displayGrid[row][col] is None:
