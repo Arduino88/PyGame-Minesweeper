@@ -18,18 +18,18 @@ displayGrid = [[None for _ in range(cols)] for _ in range(rows)]
 margin = 5
 
 
-
 colors = {
-    'bg': (76, 76, 71),
-    'unopened': (30, 30, 30),
+    'bg': (192, 192, 192),
+    'unopened': (200, 200, 200),
+    'opened' :(220, 220, 220),
     'mine': (150, 75, 75),
-    'flag': (75, 150, 75),
+    'flag': (255, 0, 0),
     0: (150, 75, 75),
-    1: (240, 90, 90),
-    2: (240, 160, 90),
-    3: (240, 220, 90),
-    4: (240, 240, 90),
-    5: (75, 150, 75),
+    1: (0, 0, 221),
+    2: (39, 126, 39),
+    3: (241, 0, 1),
+    4: (3, 3, 132),
+    5: (112, 16, 0),
     6: (75, 180, 75),
     7: (75, 210, 75),
     8: (75, 240, 75)
@@ -113,7 +113,8 @@ def main():
     pygame.init()
     generateBombs()
     loadHiddenGrid()
-
+    flag = pygame.image.load('assets/flag.png')
+    flag = pygame.transform.scale(flag, (25, 25))
     mainFont = pygame.font.SysFont('segoeui', 30, bold=True)
     screen = pygame.display.set_mode(boardPixels)
     pygame.display.set_caption("Minesweeper")
@@ -126,7 +127,10 @@ def main():
         screen.fill(colors['bg'])
         for row in range(rows):
             for col in range(cols):
-                pygame.draw.rect(screen, colors['unopened'], (colPixels * col + margin, rowPixels * row + margin, colPixels - margin, rowPixels - margin))
+                if displayGrid[row][col] is None:
+                    pygame.draw.rect(screen, colors['unopened'], (colPixels * col + margin, rowPixels * row + margin, colPixels - margin, rowPixels - margin))
+                else:
+                    pygame.draw.rect(screen, colors['opened'], (colPixels * col + margin, rowPixels * row + margin, colPixels - margin, rowPixels - margin))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -161,11 +165,11 @@ def main():
 
                 print(x, y)
 
-        for num in (0, 1, 2, 3, 4, 5, 6, 7, 8, 'flag'):
+        for num in (1, 2, 3, 4, 5, 6, 7, 8, 'flag'):
             if type(num) == int:
                 textSurface = mainFont.render(str(num), False, colors[num])
             if num == 'flag':
-                textSurface = mainFont.render('F', False, colors['flag'])
+                textSurface = flag
 
             for row in range(len(displayGrid)):
                 for col in range(len(displayGrid[row])):
