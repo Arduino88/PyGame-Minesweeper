@@ -54,7 +54,7 @@ def main():
 
     def selectTile(col, row):
         nonlocal running
-        if bombGrid[row][col]:
+        if bombGrid[row][col] and displayGrid[row][col] != 'F':
             running = False
 
 
