@@ -17,7 +17,6 @@ hiddenGrid = [[None for _ in range(cols)] for _ in range(rows)]
 displayGrid = [[None for _ in range(cols)] for _ in range(rows)]
 margin = 5
 
-
 colors = {
     'bg': (192, 192, 192),
     'unopened': (200, 200, 200),
@@ -35,8 +34,6 @@ colors = {
     8: (75, 240, 75)
 }
 
-
-
 def main():
     def generateBombs():
         bombsX = [random.randint(0, cols - 1) for _ in range(mines)]
@@ -50,13 +47,10 @@ def main():
         for row in bombGrid:
             print(row)
 
-
-
     def selectTile(col, row):
         nonlocal running
         if bombGrid[row][col] and displayGrid[row][col] != 'F':
             running = False
-
 
         if displayGrid[row][col] is None:
             displayGrid[row][col] = hiddenGrid[row][col]
@@ -83,7 +77,6 @@ def main():
                         newRow = tempRow + dy
                         if 0 <= newCol < cols and 0 <= newRow < rows:
                             q.append((newCol, newRow))
-
 
     def flagTile(col, row):
         if displayGrid[row][col] is None:
@@ -123,7 +116,6 @@ def main():
 
     while running:
         
-
         screen.fill(colors['bg'])
         for row in range(rows):
             for col in range(cols):
@@ -177,12 +169,7 @@ def main():
                     if (type(num) == int and displayGrid[row][col] == num) or (num == 'flag' and displayGrid[row][col] == 'F'):
                         screen.blit(textSurface, ((colPixels * col) + colPixels // 2 - textSurface.get_width() // 2, (rowPixels * row) + colPixels // 2 - textSurface.get_height() // 2))
 
-
         pygame.display.flip()
-
-        
-
-
 
 if __name__ == "__main__":
     main()
